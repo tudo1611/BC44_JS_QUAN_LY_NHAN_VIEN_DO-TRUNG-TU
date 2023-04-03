@@ -1,4 +1,5 @@
 var showMessage = function (id, message) {
+  document.getElementById(id).style.display = "block";
   document.getElementById(id).innerHTML = message;
 };
 
@@ -13,10 +14,6 @@ function validateAccount(account) {
   return regex.test(account);
 }
 
-
-
-
-
 var kiemTraTrung = function (tknv, dsnv) {
   var index = dsnv.findIndex(function (item) {
     return tknv == item.tknv;
@@ -30,8 +27,6 @@ var kiemTraTrung = function (tknv, dsnv) {
   }
 };
 
-
-
 var kiemTraRong = function (idErr, value) {
   if (value.length == 0) {
     showMessage(idErr, "Vui lòng không để trống");
@@ -41,7 +36,6 @@ var kiemTraRong = function (idErr, value) {
     return true;
   }
 };
-
 
 var kiemTraEmail = function (email) {
   const re =
