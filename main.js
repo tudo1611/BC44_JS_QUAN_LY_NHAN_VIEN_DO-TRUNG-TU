@@ -1,22 +1,46 @@
 var dsnv = [];
 
-
 //lấy json lên khi user load trang
 var dataJson = localStorage.getItem("DSNV_LOCAL");
 //convert từ json thành array
 if (dataJson != null) {
-  dssv = JSON.parse(dataJson);
+  var dataArr = JSON.parse(dataJson);
+  for (var i = 0; i < dataArr.length; i++) {
+    var item = dataArr[i];
+    var nv = new NhanVien(
+      item.tknv,
+      item.name,
+      item.email,
+      item.password,
+      item.datepicker,
+      item.luongCB,
+      item.chucvu,
+      item.gioLam
+    );
+    dsnv.push(nv);
+  }
   renderDSNV(dsnv);
 }
 
 function themNV() {
   var nv = layThongTinTuForm();
-  var isValid = kiemTraTrung(nv.tknv, dsnv);
-
+  //tknv
+  var isValid = kiemTraTrung(nv.tknv, dsnv) && kiemTraTaiKhoan(nv.tknv);
+  //email
   isValid =
     isValid & kiemTraRong("tbEmail", nv.email) && kiemTraEmail(nv.email);
-
+  //tennv
   isValid = isValid & kiemTraRong("tbTen", nv.name);
+  //password
+  isValid = isValid & kiemTraPassword(nv.password);
+  //datepicker
+  isValid = isValid & kiemTraRong("tbNgay", nv.datepicker);
+  //luongCB
+  isValid = isValid & kiemTraLuongCB(nv.luongCB);
+  //chucvu
+  isValid = isValid & kiemTraChucVu(nv.chucvu);
+  //gioLam
+  isValid = isValid & kiemTraGioLam(nv.gioLam);
   if (isValid) {
     dsnv.push(nv);
     //convert array dssv thành json
@@ -53,6 +77,63 @@ function suaNV(id) {
   }
 }
 
+function capNhatNhanVien() {
+  //bỏ chặn user
+  document.getElementById("tknv").disabled = false;
+
+  //lấy thông tin từ form
+  var nv = layThongTinTuForm();
+  var viTri = dsnv.findIndex(function (item) {
+    return item.tknv == nv.tknv;
+  });
+  if (viTri !== -1) {
+    dsnv[viTri] = nv;
+    renderDSNV(dsnv);
+    // resetForm();
+  }
+}
+
+// function capNhatNhanVien() {
+//   //bỏ chặn user
+//   document.getElementById("tknv").disabled = false;
+
+//   //lấy thông tin từ form
+//   var nv = layThongTinTuForm();
+//   var viTri = dsnv.findIndex(function (item) {
+//     return item.tknv == nv.tknv;
+//   });
+//   if (viTri !== -1) {
+//     dsnv[viTri] = nv;
+//      var isValid = kiemTraTrung(nv.tknv, dsnv) && kiemTraRong("tbTKNV", nv.tknv);
+//   //email
+//   isValid =
+//     isValid & kiemTraRong("tbEmail", nv.email) && kiemTraEmail(nv.email);
+//   //tennv
+//   isValid = isValid & kiemTraRong("tbTen", nv.name);
+//   //password
+//   isValid = isValid & kiemTraPassword(nv.password);
+//   //datepicker
+//   isValid = isValid & kiemTraRong("tbNgay", nv.datepicker);
+//   //luongCB
+//   isValid = isValid & kiemTraLuongCB(nv.luongCB);
+//   //chucvu
+//   isValid = isValid & kiemTraChucVu(nv.chucvu);
+//   //gioLam
+//   isValid = isValid & kiemTraGioLam(nv.gioLam);
+//   if (isValid) {
+//     renderDSNV(dsnv);
+//     resetForm();
+//   }
+// }
+// }
+
+function resetForm() {
+  document.getElementById("formQLNV").reset();
+}
+
 document.getElementById("btnThemNV").addEventListener("click", function () {
   themNV(dsnv);
+});
+document.getElementById("btnCapNhat").addEventListener("click", function () {
+  capNhatNhanVien(dsnv);
 });

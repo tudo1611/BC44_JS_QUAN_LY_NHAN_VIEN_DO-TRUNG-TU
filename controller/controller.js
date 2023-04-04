@@ -1,5 +1,3 @@
-
-
 function renderDSNV(nvArr) {
   var contentHTML = "";
   for (var i = 0; i < nvArr.length; i++) {
@@ -14,14 +12,16 @@ function renderDSNV(nvArr) {
         <td>${nv.xepLoai()}</td>
         <td>
         <button onclick="xoaNV(${nv.tknv})" class='btn btn-danger'>Xóa</button>
-        <button onclick="suaNV(${nv.tknv})" class='btn btn-warning'>Sửa</button>
+        <button onclick="suaNV(${
+          nv.tknv
+        })" class='btn btn-warning' id="btnThem" data-toggle="modal"
+									data-target="#myModal">Sửa</button>
     </td>
         </tr>`;
     contentHTML += contentTr;
   }
   document.querySelector("#tableDanhSach").innerHTML = contentHTML;
 }
-
 
 function layThongTinTuForm() {
   var tknv = document.getElementById("tknv").value;
@@ -34,7 +34,16 @@ function layThongTinTuForm() {
   var gioLam = document.getElementById("gioLam").value * 1;
 
   //lưu
-  var nv = new NhanVien(tknv,name,email,password,datepicker,luongCB,chucvu,gioLam)
+  var nv = new NhanVien(
+    tknv,
+    name,
+    email,
+    password,
+    datepicker,
+    luongCB,
+    chucvu,
+    gioLam
+  );
 
   // var nv = {
   //   tknv: tknv,
@@ -67,7 +76,6 @@ function layThongTinTuForm() {
   // };
   return nv;
 }
-
 
 function showThongTinLenForm(nv) {
   document.getElementById("tknv").value = nv.tknv;
