@@ -116,7 +116,7 @@ function searchNV() {
   var request = document.getElementById("searchName").value.trim();
   document.getElementById("searchName").value = "";
   var result = dsnv.filter(function(e){
-    return e.grade() === request;
+    return e.xepLoai() === request;
   });
   renderDSNV(result);
 }
