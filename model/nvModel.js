@@ -18,13 +18,13 @@ function NhanVien(_tknv,_name,_email,_password,_datepicker,_luongCB,_chucvu,_gio
     };
     this.xepLoai =  function () {
       if (this.gioLam >= 192) {
-        return "Nhân viên xuất sắc";
+        return "Xuất sắc";
       } else if (this.gioLam >= 176 && this.gioLam < 192) {
-        return "Nhân viên giỏi";
+        return "Giỏi";
       } else if (this.gioLam >= 160 && this.gioLam < 176) {
-        return "Nhân viên khá";
+        return "Khá";
       } else {
-        return "Nhân viên trung bình";
+        return "Trung bình";
       }
     };
 }

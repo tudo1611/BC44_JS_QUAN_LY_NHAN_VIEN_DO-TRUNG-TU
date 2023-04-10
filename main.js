@@ -78,21 +78,48 @@ function suaNV(id) {
 }
 
 function capNhatNhanVien() {
+  var nv = layThongTinTuForm();
+
+  //email
+  var isValid = kiemTraRong("tbEmail", nv.email) && kiemTraEmail(nv.email);
+  //tennv
+  isValid = isValid & kiemTraRong("tbTen", nv.name);
+  //password
+  isValid = isValid & kiemTraPassword(nv.password);
+  //datepicker
+  isValid = isValid & kiemTraRong("tbNgay", nv.datepicker);
+  //luongCB
+  isValid = isValid & kiemTraLuongCB(nv.luongCB);
+  //chucvu
+  isValid = isValid & kiemTraChucVu(nv.chucvu);
+  //gioLam
+  isValid = isValid & kiemTraGioLam(nv.gioLam);
+
   //bỏ chặn user
   document.getElementById("tknv").disabled = false;
-
-  //lấy thông tin từ form
-  var nv = layThongTinTuForm();
   var viTri = dsnv.findIndex(function (item) {
     return item.tknv == nv.tknv;
   });
   if (viTri !== -1) {
-    dsnv[viTri] = nv;
-    renderDSNV(dsnv);
-    // resetForm();
+    if (isValid) {
+      dsnv[viTri] = nv;
+      renderDSNV(dsnv);
+      resetForm();
+      var dataJson = JSON.stringify(dsnv);
+      //lưu JSON
+      localStorage.setItem("DSNV_LOCAL", dataJson);
+    }
   }
 }
 
+function searchNV() {
+  var request = document.getElementById("searchName").value.trim();
+  document.getElementById("searchName").value = "";
+  var result = dsnv.filter(function(e){
+    return e.grade() === request;
+  });
+  renderDSNV(result);
+}
 // function capNhatNhanVien() {
 //   //bỏ chặn user
 //   document.getElementById("tknv").disabled = false;
@@ -137,3 +164,6 @@ document.getElementById("btnThemNV").addEventListener("click", function () {
 document.getElementById("btnCapNhat").addEventListener("click", function () {
   capNhatNhanVien(dsnv);
 });
+// document.getElementById("btnTimNV").addEventListener('click', function () {
+//   searchNV();
+// });
